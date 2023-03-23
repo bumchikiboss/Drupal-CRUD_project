@@ -27,10 +27,23 @@ class demo_EditUserDetails extends FormBase {
 
     $id = \Drupal:: routeMatch()->getParameter('id');
     $query = \Drupal::database();
-    $data = $query->select('demo_UserDetails','e')
-      ->fields('e',['id','username','email','gender','address'])
-      ->condition('id',$id,'=')
-      ->execute()->fetchAll(\PDO::FETCH_OBJ);
+    $data = $query->select('demo_UserDetails','ud');
+    $data ->fields('ud',['id','username','email','gender']);
+    $data ->fields('ua', ['address']);
+    $data ->fields('dd', ['department'])
+          ->condition('ud.id',$id,'=');
+    $data->join('demo_addressDetails', 'ua', 'ua.user_id=ud.id');
+    $data->join('demo_departmentDetails', 'dd', 'dd.user_id=ud.id');
+
+    $data = $data->execute()->fetchAll(\PDO::FETCH_OBJ);
+
+//    $data2 = $query->select('demo_UserDetails','ud');
+//    $data2->fields('ud', ['id', 'username', 'email', 'gender']);
+//    $data2->fields('ua', ['address'])
+//          ->condition('ud.id',$id,'=');
+//    $data2->join('demo_addressDetails', 'ua', 'ua.user_id=ud.id');
+//    $result = $data2->execute()->fetchAll(\PDO::FETCH_OBJ);
+
 
 
     $form['username'] = [
@@ -68,13 +81,30 @@ class demo_EditUserDetails extends FormBase {
 
     ];
 
-    $form['skills'] = [
+    $form['department'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Department'),
+      '#required' => TRUE,
+      '#maxlength' => 20,
+      '#default_value'=> $data[0]->department,
+    ];
+
+    /*$form['skills'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Skills'),
       '#options' => [
         'C' => t('C'),
         'PHP' => t('PHP'),
         'Java' => t('Java')
+      ],
+    ];*/
+
+    $form['file'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Profile Pic (PNG)',
+      '#upload_location' => 'public://profiles',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png'],
       ],
     ];
 
@@ -126,14 +156,27 @@ class demo_EditUserDetails extends FormBase {
     $formValues = $form_state->getValues();
 
 
-    $formData['username'] = $formValues['username'];
-    $formData['email'] = $formValues['email'];
-    $formData['gender'] = $formValues['gender'];
-    $formData['address'] = $formValues['address'];
+    $userData['username'] = $formValues['username'];
+    $userData['email'] = $formValues['email'];
+    $userData['gender'] = $formValues['gender'];
+
+    $userAddress['address'] = $formValues['address'];
+
+    $userDepartment['department'] = $formValues['department'];
 
     $con->update('demo_UserDetails')
-      ->fields($formData)
+      ->fields($userData)
       ->condition('id',$id)
+      ->execute();
+
+    $con->update('demo_addressDetails')
+      ->fields($userAddress)
+      ->condition('user_id',$id)
+      ->execute();
+
+    $con->update('demo_departmentDetails')
+      ->fields($userDepartment)
+      ->condition('user_id',$id)
       ->execute();
 
     $this->messenger()->addStatus($this->t('User Details has been updated.'));

@@ -32,12 +32,12 @@ demo_module1.editUsers:
   requirements:
     _permission: 'access content'
 
-demo_module1.deleteUsers:
-  path: '/demo/custom-deleteUsers/{id}'
-  defaults:
-    _controller: '\Drupal\demo_module1\Controller\demo_module1_controller::deleteUsers'
-  requirements:
-    _permission: 'access content'
+#demo_module1.deleteUsers:
+#  path: '/demo/custom-deleteUsers/{id}'
+#  defaults:
+#    _controller: '\Drupal\demo_module1\Controller\demo_module1_controller::deleteUsers'
+#  requirements:
+#    _permission: 'access content'
 
 
 demo_module1.confirmDelete:

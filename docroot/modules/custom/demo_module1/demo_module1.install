@@ -62,6 +62,11 @@ function demo_module1_schema() {
               'default' => '',
               'description' => 'Gender',
             ],
+      'file' => [
+              'type' => 'varchar_ascii',
+              'length' => 100,
+              'description' => 'File Path',
+            ],
 
 
       /*'skills' => [
@@ -77,7 +82,7 @@ function demo_module1_schema() {
       'status' => ['status'],
     ],
   ];
-$schema['demo_addressDetails'] = [
+    $schema['demo_addressDetails'] = [
       'description' => 'User Address.',
       'fields' => [
         'id' => [
@@ -101,6 +106,31 @@ $schema['demo_addressDetails'] = [
       'primary key' => ['id'],
 
     ];
+
+    $schema['demo_departmentDetails'] = [
+          'description' => 'User Department.',
+          'fields' => [
+            'id' => [
+                  'type' => 'serial',
+                  'not null' => TRUE,
+                  'description' => 'Primary Key: Unique record ID.',
+                ],
+            'user_id' => [
+                'type' => 'int',
+                'not null' => TRUE,
+                'description' => 'User ID.',
+              ],
+            'department' => [
+              'type' => 'varchar_ascii',
+              'length' => 20,
+              'not null' => TRUE,
+              'default' => '',
+              'description' => 'User Department',
+            ],
+          ],
+          'primary key' => ['id'],
+
+        ];
 
   return $schema;
 }

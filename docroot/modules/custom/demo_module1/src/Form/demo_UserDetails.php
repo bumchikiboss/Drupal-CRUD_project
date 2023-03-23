@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\Core\Routing;
+use Drupal\file\Entity\File;
 
 
 /**
@@ -54,7 +55,23 @@ class demo_UserDetails extends FormBase {
       '#maxlength' => 200,
     ];
 
-    $form['skills'] = [
+    $form['department'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Department'),
+      '#required' => TRUE,
+      '#maxlength' => 20,
+    ];
+
+    $form['file'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Profile Pic (PNG)',
+      '#upload_location' => 'public://profiles',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png'],
+        ],
+    ];
+
+    /*$form['skills'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Skills'),
       '#options' => [
@@ -62,7 +79,7 @@ class demo_UserDetails extends FormBase {
         'PHP' => t('PHP'),
         'Java' => t('Java')
       ],
-    ];
+    ];*/
 
     $form['actions'] = [
       '#type' => 'actions',
@@ -115,6 +132,14 @@ class demo_UserDetails extends FormBase {
     $userData['email'] = $formValues['email'];
     $userData['gender'] = $formValues['gender'];
 
+    $userPic = $formValues['file'];
+
+    if (isset($userPic[0]) && !empty($userPic[0])) {
+      $file = File::load($userPic[0]);
+      $file->setPermanent();
+      $file->save();
+    }
+
     $userID = $con->insert('demo_UserDetails')
         ->fields($userData)->execute();
 
@@ -122,6 +147,11 @@ class demo_UserDetails extends FormBase {
     $userAddress['user_id'] = $userID;
     $con->insert('demo_addressDetails')
         ->fields($userAddress)->execute();
+
+    $userDepartment['department'] = $formValues['department'];
+    $userDepartment['user_id'] = $userID;
+    $con->insert('demo_departmentDetails')
+        ->fields($userDepartment)->execute();
 
     $this->messenger()->addStatus($this->t('User Details has been saved.'));
     $form_state->setRedirect('welcome_module.getUsers');

@@ -21,35 +21,39 @@ class demo_module1_controller extends ControllerBase
 
   public function getUsers()
   {
-    $query = \Drupal::database();
+    $database = \Drupal::database();
     $limit = 3;
 
-    $result = $query->select("demo_UserDetails", 'ud');
-    $result
-      ->join('demo_addressDetails','ad','ud.id = ad.user_id');
-    $result
-      ->fields('ud', ['id', 'username', 'email', 'gender'])
-      ->fields('ad',['address']);
-    $result
-      ->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit($limit)
-      ->execute()->fetchAll(\PDO::FETCH_OBJ);
+    $query = $database->select("demo_UserDetails", 'ud');
+    $query->fields('ud', ['id', 'username', 'email', 'gender']);
+    $query->fields('ua', ['address']);
+    $query->fields('dd',['department']);
+
+    $query->join('demo_addressDetails', 'ua', 'ua.user_id=ud.id');
+    $query->join('demo_departmentDetails', 'dd', 'dd.user_id=ud.id');
+    $result = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit($limit)->execute()->fetchAll();
 
     $data = [];
 
     foreach ($result as $row) {
+      if($row->gender == 0) $gender = 'Male';
+      elseif ($row->gender == 1) $gender = 'Female';
+      else $gender = 'Others';
+
       $data[] = [
         'id' => $row->id,
         'username' => $row->username,
         'email' => $row->email,
-        'gender' => $row->gender,
+        'gender' => $gender,
         'address' => $row->address,
+        'department' => $row->department,
         'edit' => t("<a href='custom-editUsers/$row->id'>Edit</a>"),
         'delete' => t("<a href='custom-confirmDelete/$row->id'>Delete</a>")
 
       ];
     }
 
-    $header = array('Id', 'Username', 'Email Id', 'Gender', 'Address', 'Edit', 'Delete' );
+    $header = array('Id', 'Username', 'Email Id', 'Gender', 'Address', 'Department', 'Edit', 'Delete' );
 
     $add_user_url = Url::fromRoute('demo_module1.demo__user_details');
 
@@ -78,6 +82,7 @@ class demo_module1_controller extends ControllerBase
     ];
   }
 
+  /*
   public function deleteUsers($id)
   {
     $query = \Drupal::Database();
@@ -90,5 +95,6 @@ class demo_module1_controller extends ControllerBase
 
     $this->messenger()->addStatus($this->t('User Details has been Deleted.'));
   }
-
+*/
 }
+

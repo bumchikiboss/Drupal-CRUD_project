@@ -66,6 +66,14 @@ class demo_ConfirmDelete extends ConfirmFormBase {
           ->condition('id',$id,'=')
           ->execute();
 
+    $query->delete('demo_addressDetails')
+          ->condition('user_id',$id,'=')
+          ->execute();
+
+    $query->delete('demo_departmentDetails')
+          ->condition('user_id',$id,'=')
+          ->execute();
+
     $response = new \Symfony\Component\HttpFoundation\RedirectResponse('../custom-displayUsers');
     $response->send();
 
