@@ -1,0 +1,49 @@
+welcome_module.welcome:
+  path: '/demo/custom1'
+  defaults:
+    _controller: '\Drupal\demo_module1\Controller\demo_module1_controller::welcome'
+    _title: 'Welcome to My First Custom Module in Drupal 9'
+  requirements:
+    _permission: 'access content'
+
+
+welcome_module.getUsers:
+  path: '/demo/custom-displayUsers'
+  defaults:
+    _controller: '\Drupal\demo_module1\Controller\demo_module1_controller::getUsers'
+  requirements:
+    _permission: 'access content'
+
+
+demo_module1.demo__user_details:
+  path: '/demo/custom-form'
+  defaults:
+    _title: 'User Details'
+    _form: 'Drupal\demo_module1\Form\demo_UserDetails'
+  requirements:
+    _permission: 'access content'
+
+
+demo_module1.editUsers:
+  path: '/demo/custom-editUsers/{id}'
+  defaults:
+    _title: 'Edit User Details'
+    _form: 'Drupal\demo_module1\Form\demo_EditUserDetails'
+  requirements:
+    _permission: 'access content'
+
+demo_module1.deleteUsers:
+  path: '/demo/custom-deleteUsers/{id}'
+  defaults:
+    _controller: '\Drupal\demo_module1\Controller\demo_module1_controller::deleteUsers'
+  requirements:
+    _permission: 'access content'
+
+
+demo_module1.confirmDelete:
+  path: '/demo/custom-confirmDelete/{id}'
+  defaults:
+    _title: 'Confirm User Deletion'
+    _form: 'Drupal\demo_module1\Form\demo_ConfirmDelete'
+  requirements:
+    _permission: 'access content'

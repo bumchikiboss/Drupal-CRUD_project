@@ -1,0 +1,6 @@
+type: module
+core_version_requirement: ^8 || ^9
+name: Demo Module 1
+description: 'First Demo Custom Module for Drupal'
+package: Custom
+version: 1.0
