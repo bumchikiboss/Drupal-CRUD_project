@@ -62,6 +62,16 @@ class demo_ConfirmDelete extends ConfirmFormBase {
     $id = \Drupal:: routeMatch()->getParameter('id');
 
     $query = \Drupal::Database();
+
+    $oldFile = $query->select('demo_UserDetails','ud')
+      ->fields('ud',['file'])
+      ->condition('id',$id)
+      ->execute()->fetchField();
+
+    if($oldFile){
+      unlink($oldFile);
+    }
+
     $query->delete('demo_UserDetails')
           ->condition('id',$id,'=')
           ->execute();

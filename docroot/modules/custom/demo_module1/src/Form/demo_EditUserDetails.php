@@ -7,6 +7,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\Core\Routing;
+use Drupal\file\Entity\File;
+
 
 /**
  * Provides a Demo Module 1 form.
@@ -163,6 +165,26 @@ class demo_EditUserDetails extends FormBase {
     $userAddress['address'] = $formValues['address'];
 
     $userDepartment['department'] = $formValues['department'];
+
+    $userPic = $formValues['file'];
+
+    if(!empty($userPic[0])){
+      $file = File::load($userPic[0]);
+      $file->setPermanent();
+      $file->save();
+      $userData['file'] = $file->getFileUri();
+    }
+
+    $oldFile = $con->select('demo_UserDetails','ud')
+      ->fields('ud',['file'])
+      ->condition('id',$id)
+      ->execute()->fetchField();
+
+    if($oldFile){
+//      $fileOld = File::load($oldFile);
+//      unlink($fileOld);
+      unlink($oldFile);
+    }
 
     $con->update('demo_UserDetails')
       ->fields($userData)

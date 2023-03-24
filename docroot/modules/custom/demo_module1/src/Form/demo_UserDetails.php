@@ -134,14 +134,17 @@ class demo_UserDetails extends FormBase {
 
     $userPic = $formValues['file'];
 
-    if (isset($userPic[0]) && !empty($userPic[0])) {
+    if (!empty($userPic[0])) {
       $file = File::load($userPic[0]);
       $file->setPermanent();
       $file->save();
+      $userData['file'] = $file->getFileUri();
     }
 
+
     $userID = $con->insert('demo_UserDetails')
-        ->fields($userData)->execute();
+            ->fields($userData)->execute();
+
 
     $userAddress['address'] = $formValues['address'];
     $userAddress['user_id'] = $userID;
