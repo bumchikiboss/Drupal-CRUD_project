@@ -1,0 +1,42 @@
+
+user_manager.getUsers:
+  path: '/admin/displayUsers'
+  defaults:
+    _controller: '\Drupal\user_manager\Controller\user_manager_controller::getUsers'
+  requirements:
+    _permission: 'access content'
+
+
+user_manager.addUserDetails:
+  path: '/admin/addUserDetails'
+  defaults:
+    _title: 'User Details'
+    _form: 'Drupal\user_manager\Form\AddUserDetails'
+  requirements:
+    _permission: 'access content'
+
+
+user_manager.editUsers:
+  path: '/admin/editUsers/{id}'
+  defaults:
+    _title: 'Edit User Details'
+    _form: 'Drupal\user_manager\Form\EditUserDetails'
+  requirements:
+    _permission: 'access content'
+
+user_manager.userPassQueue:
+  path: '/admin/userPassQueue'
+  defaults:
+    _title: 'Add user passwords in queue'
+    _form: 'Drupal\user_manager\Form\userPassQueueForm'
+  requirements:
+    _permission: 'access content'
+
+
+user_manager.confirmDelete:
+  path: '/admin/confirmDelete/{id}'
+  defaults:
+    _title: 'Confirm User Deletion'
+    _form: 'Drupal\user_manager\Form\ConfirmDelete'
+  requirements:
+    _permission: 'access content'
