@@ -20,6 +20,6 @@ jobs:
         repository: bumchikiboss/gitleaks-actions
         ref: master 
         token: ${{ secrets.GIT_ACTION_TOKEN }} #stored in GitHub secrets
-        path: ./gitleaksaction
+        path: ./github-actions
     - name: run gitleaks action
-      uses: ./gitleaksaction
+      uses: ./github-actions
