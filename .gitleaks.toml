@@ -1,0 +1,29 @@
+[[rules]]
+	description = "Hardcoded credentials in Go files"
+	file = '''^(.*?)\.go$'''
+	regex = '''(?i)(?:secret|key|signature|password|pwd|pass|token)(?:\w|\s*?)(?:=|:=)(?:\s*?)[\"'`](.{4,120}?)[\"'`]'''
+	tags = ["credentials", "hardcoded", "go"]
+	[[rules.Entropies]]
+		Min = "3"
+		Max = "7"
+		Group = "1"
+
+[[rules]]
+	description = "Hardcoded credentials in JavaScript or TypeScript files"
+	file = '''^(.*?)\.(?:j|t)s$'''
+	regex = '''(?i)(?:secret|key|signature|password|pwd|pass|token)(?:\w|\s*?)(?:=){1}(?:\s{0,10})[\"'`](.*?)[\"'`]'''
+	tags = ["credentials", "hardcoded", "js"]
+	[[rules.Entropies]]
+		Min = "3"
+		Max = "7"
+		Group = "1"
+
+[[rules]]
+	description = "Hardcoded credentials in PHP files"
+	file = '''^(.*?)\.php$'''
+	regex = '''(?i)(?:secret|key|signature|password|pwd|pass|token)(?:.{0,20})(?:=){1}(?:.{0,10})[\"'`](.{4,120})[\"'`]'''
+	tags = ["credentials", "hardcoded", "php"]
+	[[rules.Entropies]]
+		Min = "3"
+		Max = "7"
+		Group = "1"
