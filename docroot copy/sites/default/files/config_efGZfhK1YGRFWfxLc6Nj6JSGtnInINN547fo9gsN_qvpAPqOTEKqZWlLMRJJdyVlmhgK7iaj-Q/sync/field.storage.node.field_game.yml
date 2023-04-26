@@ -1,0 +1,20 @@
+uuid: 24345740-96ef-4ca7-962b-373847c24c27
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_game
+field_name: field_game
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
