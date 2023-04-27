@@ -1,0 +1,21 @@
+uuid: 42b762d4-26aa-4df6-a3e9-d03676877842
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_platform
+    - node.type.release_roadmap
+  module:
+    - text
+id: node.release_roadmap.field_platform
+field_name: field_platform
+entity_type: node
+bundle: release_roadmap
+label: Platform
+description: 'All the platforms the game will be released on.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text
