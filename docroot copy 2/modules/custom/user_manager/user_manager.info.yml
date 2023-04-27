@@ -1,0 +1,6 @@
+type: module
+core_version_requirement: ^8 || ^9
+name: User Manager
+description: 'First Demo Custom Module for Drupal for Managing User Data'
+package: Custom
+version: 1.0
